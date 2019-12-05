@@ -12,7 +12,7 @@
     <bean name="datasource" class="com.mchange.v2.c3p0.DriverManagerDataSource">
         <property name="driverClass" value="${jdbc.driver}"></property>
         <property name="jdbcUrl" value="${jdbc.url}"></property>
-        <property name="user" value="${jdbc.username}"></property>
+        <property name="user" value="${jdbc.userName}"></property>
         <property name="password" value="${jdbc.password}"></property>
     </bean>
 

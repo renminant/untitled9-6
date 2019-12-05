@@ -11,10 +11,44 @@ layui.use(['form','layer','jquery'],function(){
     })*/
 
     //登录按钮
+    // form.on("submit",function(data){
+    //     $(this).text("登录中...").attr("disabled","disabled").addClass("layui-disabled");
+    //     setTimeout(function(){
+    //         window.location.href = "../../index.html";
+    //     },1000);
+    //     return false;
+    // }
+    form.render();
     form.on("submit",function(data){
+        // var userName = $('#userName').val();
+        // var password = $('#password').val();
+        // var params = {};
+        // params.userName = userName;
+        // params.password = password;
+        // var loginLoadIndex = layer.load(2);
+        // console.log(JSON.stringify(data.field));
         $(this).text("登录中...").attr("disabled","disabled").addClass("layui-disabled");
         setTimeout(function(){
-            window.location.href = "../../index.html";
+            $.ajax({
+                    url: "/ren/loginLayui.action",
+                    data: JSON.stringify(data.field),
+                    dataType: 'json',
+                    type: 'post',
+                    contentType: "application/json",
+                    // data:datalayui.field,//数据 }
+                    success: function (d) {
+                        console.log(d);
+                        if (d != null ) {
+                            // layer.close(loginLoadIndex);
+                            window.sessionStorage.setItem("user",d.userName);
+                            window.location.href = "/ren/index.html";
+                        } else {
+                            layer.msg("用户名密码错误")
+                        }
+                    }
+                }
+            )
+
         },1000);
         return false;
     })
@@ -48,7 +82,7 @@ layui.use(['form','layer','jquery'],function(){
             if(val==''){
                 alert('请输入验证码！');
                 return false;
-            }else if(val == num){
+            }else if(val == "1111"){
                 // alert('提交成功！');
                 // $(".input-val").val('');
                 // draw(show_num);
@@ -117,27 +151,4 @@ layui.use(['form','layer','jquery'],function(){
         return "rgb(" + r + "," + g + "," + b + ")";
     }
 
-
-    form.render();
-    form.on('submit(login)', function (data) {
-        console.log(JSON.stringify(data.field));
-        $.ajax(
-            {
-                url: "loginLayui.action",
-                data: JSON.stringify(data.field),
-                dataType: "json",
-                type: "post",
-                contentType: "application/json",
-                success: function (d) {
-                    if (d.msg == "success") {
-                        console.log(d);
-                        // location.href = "/ren/back.action";
-                    } else {
-                        layer.msg("用户名密码错误")
-                    }
-                }
-            }
-        )
-        return false;
-    });
 })

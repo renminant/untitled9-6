@@ -29,17 +29,14 @@ public class Userconnn {
 //登录
     @RequestMapping("/loginLayui.action")
     @ResponseBody
-    public Map<String,String> Login(@RequestBody User user) {
+    public User Login(@RequestBody User user) {
         HttpSession session = request.getSession();
-        User loginUser = userDao.Login(user);
-        Map<String,String> msg = new HashMap<>();
-        if (loginUser != null) {
-            session.setAttribute("user", loginUser);
-            msg.put("msg","success");
-            return msg;
+        User login = userDao.Login(user);
+        if (login != null) {
+            session.setAttribute("user", login);
+         return login;
         } else {
-            msg.put("msg","false");
-            return msg;
+           return null;
         }
     }
 

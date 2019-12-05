@@ -7,7 +7,7 @@
     </sql>
 
     <select id="Login" parameterType="user" resultType="User">
-      <include refid="sql"/> where name=#{name} and password=#{password}
+      <include refid="sql"/> where userName=#{userName} and password=#{password}
     </select>
 <!--添加用户-->
     <!--<insert id="addUserPage" parameterType="user">-->

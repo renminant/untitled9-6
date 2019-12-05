@@ -16,7 +16,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User Login(User user) {
-
         return userMapper.Login(user);
     }
 

@@ -3,48 +3,37 @@ package pojo;
 import java.util.List;
 
 public class User {
-    Integer user_id;
-    String name;
-    String loginName;
+    Integer id;
+    String nickname;
+    String userName;
     String password;
-    String gender;
-    String birthDate;
-    String phone;
-    String address;
-    String userType;
+    String power;
+    String stauts;
     String headpath;
-    //List<Integer> user_ids;
 
-    public String getHeadpath() {
-        return headpath;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setHeadpath(String headpath) {
-        this.headpath = headpath;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public Integer getUser_id() {
-        return user_id;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLoginName() {
-        return loginName;
-    }
-
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -55,66 +44,39 @@ public class User {
         this.password = password;
     }
 
-    public String getGender() {
-        return gender;
+    public String getPower() {
+        return power;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setPower(String power) {
+        this.power = power;
     }
 
-    public String getBirthDate() {
-        return birthDate;
+    public String getStauts() {
+        return stauts;
     }
 
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
+    public void setStauts(String stauts) {
+        this.stauts = stauts;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getHeadpath() {
+        return headpath;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setHeadpath(String headpath) {
+        this.headpath = headpath;
     }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-//    public List<Integer> getUser_ids() {
-//        return user_ids;
-//    }
-//
-//    public void setUser_ids(List<Integer> user_ids) {
-//        this.user_ids = user_ids;
-//    }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + user_id +
-                ", name='" + name + '\'' +
-                ", loginName='" + loginName + '\'' +
+                "id=" + id +
+                ", nickname='" + nickname + '\'' +
+                ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
-                ", gender='" + gender + '\'' +
-                ", birthDate='" + birthDate + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", userType='" + userType + '\'' +
+                ", power='" + power + '\'' +
+                ", stauts='" + stauts + '\'' +
                 ", headpath='" + headpath + '\'' +
                 '}';
     }

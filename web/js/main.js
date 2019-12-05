@@ -28,6 +28,12 @@ layui.use(['form','element','layer','jquery'],function(){
         layer = parent.layer === undefined ? layui.layer : top.layer,
         element = layui.element;
         $ = layui.jquery;
+    var power = window.sessionStorage.getItem("power");
+    if(power==1)
+        $("#userInfor").css("display","none");
+    else if(power==2)
+        $("#userInfor").css("display","none");
+
     //上次登录时间【此处应该从接口获取，实际使用中请自行更换】
     $(".loginTime").html(newDate.split("日")[0]+"日</br>"+newDate.split("日")[1]);
     //icon动画
