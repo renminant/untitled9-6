@@ -28,10 +28,11 @@ layui.use(['form','element','layer','jquery'],function(){
         layer = parent.layer === undefined ? layui.layer : top.layer,
         element = layui.element;
         $ = layui.jquery;
-    var power = window.sessionStorage.getItem("power");
-    if(power==1)
+    var userGrade = window.sessionStorage.getItem("userGrade");
+   var url;
+    if(userGrade==1)
         $("#userInfor").css("display","none");
-    else if(power==2)
+    if(userGrade==2)
         $("#userInfor").css("display","none");
 
     //上次登录时间【此处应该从接口获取，实际使用中请自行更换】
@@ -92,13 +93,13 @@ layui.use(['form','element','layer','jquery'],function(){
     })
 
     //用户数量
-    $.get("../json/userList.json",function(data){
+   $.get("../json/userList.json",function(data){
         $(".userAll span").text(data.count);
     })
 
     //外部图标
-    $.get(iconUrl,function(data){
-        $(".outIcons span").text(data.split(".icon-").length-1);
-    })
+    // $.get(iconUrl,function(data){
+    //     $(".outIcons span").text(data.split(".icon-").length-1);
+    // })
 
 })

@@ -1,12 +1,14 @@
 package tool;
 
 import net.sf.json.JSONArray;
+import pojo.User;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Tool {
-    public static Map<String,Object> testLayui(Object o,int page ,int limit){
+    public static Map<String,Object> testLayui(Object o, int page , int limit){
         Map<String,Object> returnTable =new HashMap<>();
         returnTable.put("code",0);
         returnTable.put("msg","");

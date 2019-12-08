@@ -1,14 +1,15 @@
-layui.use(['form','layer','table','laytpl'],function(){
+layui.use(['form','layer','table','laytpl','jquery','upload'],function(){
     var form = layui.form,
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery,
+        upload = layui.upload,
         laytpl = layui.laytpl,
         table = layui.table;
 
     //用户列表
     var tableIns = table.render({
         elem: '#userList',
-        url : '../../json/userList.json',
+        url : '/ren/tableuser.action',
         cellMinWidth : 95,
         page : true,
         height : "full-125",
@@ -22,22 +23,19 @@ layui.use(['form','layer','table','laytpl'],function(){
                 return '<a class="layui-blue" href="mailto:'+d.userEmail+'">'+d.userEmail+'</a>';
             }},
             {field: 'userSex', title: '用户性别', align:'center'},
+            {templet: '<div>{{(d.power.powername)}}</div>', title: '用户身份', align: 'center'},
             {field: 'userStatus', title: '用户状态',  align:'center',templet:function(d){
-                return d.userStatus == "0" ? "正常使用" : "限制使用";
+                return d.userStatus == "1" ? "正常使用" : "限制使用";
             }},
-            {field: 'userGrade', title: '用户等级', align:'center',templet:function(d){
-                if(d.userGrade == "0"){
-                    return "注册会员";
-                }else if(d.userGrade == "1"){
-                    return "中级会员";
-                }else if(d.userGrade == "2"){
-                    return "高级会员";
-                }else if(d.userGrade == "3"){
-                    return "钻石会员";
-                }else if(d.userGrade == "4"){
-                    return "超级会员";
-                }
-            }},
+            // {field: 'userGrade', title: '用户等级', align:'center',templet:function(d){
+            //     if(d.userGrade == "1"){
+            //         return "教师";
+            //     }else if(d.userGrade == "2"){
+            //         return "学生";
+            //     }else if(d.userGrade == "3"){
+            //         return "管理员";
+            //     }
+            // }},
             {field: 'userEndTime', title: '最后登录时间', align:'center',minWidth:150},
             {title: '操作', minWidth:175, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
@@ -45,19 +43,21 @@ layui.use(['form','layer','table','laytpl'],function(){
 
     //搜索【此功能需要后台配合，所以暂时没有动态效果演示】
     $(".search_btn").on("click",function(){
-        if($(".searchVal").val() != ''){
-            table.reload("newsListTable",{
+        var searchVal = $("#searchVal").val();
+        // if($(".searchVal").val() != ''){
+            table.reload("userListTable",{
                 page: {
                     curr: 1 //重新从第 1 页开始
                 },
+                url:'/ren/tableuser.action',
                 where: {
                     key: $(".searchVal").val()  //搜索的关键字
+
+                        // 'userName': $.trim(searchVal)
+
                 }
-            })
-        }else{
-            layer.msg("请输入搜索的内容");
-        }
-    });
+            }, 'data');
+        });
 
     //添加用户
     function addUser(edit){
@@ -69,11 +69,12 @@ layui.use(['form','layer','table','laytpl'],function(){
                 var body = layui.layer.getChildFrame('body', index);
                 if(edit){
                     body.find(".userName").val(edit.userName);  //登录名
+                    body.find(".password").text(edit.password);
                     body.find(".userEmail").val(edit.userEmail);  //邮箱
                     body.find(".userSex input[value="+edit.userSex+"]").prop("checked","checked");  //性别
                     body.find(".userGrade").val(edit.userGrade);  //会员等级
                     body.find(".userStatus").val(edit.userStatus);    //用户状态
-                    body.find(".userDesc").text(edit.userDesc);    //用户简介
+                    body.find(".userDesc").text(edit.userDesc);//用户简介
                     form.render();
                 }
                 setTimeout(function(){
@@ -97,16 +98,33 @@ layui.use(['form','layer','table','laytpl'],function(){
     //批量删除
     $(".delAll_btn").click(function(){
         var checkStatus = table.checkStatus('userListTable'),
-            data = checkStatus.data,
-            newsId = [];
+            data = checkStatus.data
+            // newsId = [];
+        var  id = "";
         if(data.length > 0) {
             for (var i in data) {
-                newsId.push(data[i].newsId);
+                id += data[i].id + ","
+                layer.msg(id);
+                // newsId.push(data[i].newsId);
             }
+            console.log(id);
             layer.confirm('确定删除选中的用户？', {icon: 3, title: '提示信息'}, function (index) {
                 // $.get("删除文章接口",{
                 //     newsId : newsId  //将需要删除的newsId作为参数传入
                 // },function(data){
+                $.ajax({
+                    url: "/ren/deleteAll.action",
+                    data: {"user_ids": id},
+                    success: function (flag) {
+                        if (flag > 0) {
+                            layer.msg("删除成功", {icon: 6});
+                            layer.closeAll();
+                            table.reload('testReload', {});
+                        } else {
+                            layer.msg("删除 失败", {icon: 6});
+                        }
+                    }
+                })
                 tableIns.reload();
                 layer.close(index);
                 // })
@@ -145,6 +163,21 @@ layui.use(['form','layer','table','laytpl'],function(){
             });
         }else if(layEvent === 'del'){ //删除
             layer.confirm('确定删除此用户？',{icon:3, title:'提示信息'},function(index){
+
+                $.ajax({
+                    url:"/ren/deleteUserByid.action",
+                    data:{"id":data.id},
+                    success:function (flag) {
+                        if (flag==1){
+                            layer.msg("删除成功",{icon:6});
+                            layer.closeAll();
+                            table.reload("testReload",{});
+                        }else {
+                            layer.msg("删除 失效",{icon:6});
+                        }
+                    },
+
+                });
                 // $.get("删除文章接口",{
                 //     newsId : data.newsId  //将需要删除的newsId作为参数传入
                 // },function(data){

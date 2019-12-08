@@ -12,11 +12,11 @@ layui.use(['bodyTab','form','element','layer','jquery'],function(){
 
     	var UserName=window.sessionStorage.getItem("user");
        $("#UserName").html(UserName);
-    	var power = window.sessionStorage.getItem("power");
+    	var userGrade = window.sessionStorage.getItem("userGrade");
     	var url;
-    	if(power==1)
+    	if(userGrade == 1)
     		url="json/teacher.json";
-		else if(power==2)
+		else if(userGrade == 2)
             url="json/student.json";
 		else
             url="json/admin.json";

@@ -2,59 +2,77 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.UserMapper">
+    <resultMap id="resultMap" type="User">
+        <id property="id" column="id"></id>
+        <result property="userName" column="userName"></result>
+        <result property="password" column="password"></result>
+        <result property="userEmail" column="userEmail"></result>
+        <result property="userSex" column="userSex"></result>
+        <result property="userGrade" column="userGrade"></result>
+        <result property="userStatus" column="userStatus"></result>
+        <result property="userEndTime" column="userEndTime"></result>
+        <result property="headpath" column="headpath"></result>
+        <association property="power" javaType="Power">
+            <id property="id" column="pid"></id>
+            <result property="powername" column="powername"></result>
+        </association>
+    </resultMap>
+
     <sql id="sql">
         select * from user
     </sql>
-
+<!--登录-->
     <select id="Login" parameterType="user" resultType="User">
       <include refid="sql"/> where userName=#{userName} and password=#{password}
     </select>
 <!--添加用户-->
-    <!--<insert id="addUserPage" parameterType="user">-->
-        <!--insert into user(user_id,name,loginName,phone) values (#{user_id},#{name},#{loginName},#{phone})-->
-    <!--</insert>-->
+    <insert id="addUser" parameterType="user">
+        insert into user(userName,password,userEmail,userSex,userGrade,userStatus,userDesc) values
+        (#{userName},#{password},#{userEmail},#{userSex},#{userGrade},#{userStatus},#{userDesc})
+    </insert>
 
     <!--<update id="updatehead" parameterType="User">-->
-        <!--update user set headpath=#{headpath} where user_id=#{user_id}-->
+    <!--update user set headpath=#{headpath} where user_id=#{user_id}-->
     <!--</update>-->
 
     <!--<update id="updatetable" parameterType="user">-->
-        <!--update user set name=#{name},loginName=# {loginName},birthDate=#{birthDate},phone=#{phone} where user_id=#{user_id}-->
+    <!--update user set name=#{name},loginName=# {loginName},birthDate=#{birthDate},phone=#{phone} where user_id=#{user_id}-->
     <!--</update>-->
+<!--单个删除-->
+    <delete id="deleteUserByid" parameterType="java.lang.Integer">
+    delete from user where id=#{id}
+    </delete>
 
-    <!--<delete id="deleteUserByid" parameterType="java.lang.Integer">-->
-        <!--delete from user where user_id=#{user_id}-->
-    <!--</delete>-->
-
-   <!--<select id="tablelayui"  resultType="User">-->
-       <!--<include refid="sql"/>-->
-   <!--</select>-->
-
-    <!--<select id="usercount" resultType="User">-->
-        <!--select count(*) from user-->
+<!--批量删除-->
+    <select id="deleteAll" parameterType="user" resultType="User">
+       select * from 'user'
+    <where>
+        id in
+    <foreach collection="user_ids" item="id" separator="，" open="(" close=")">
+        #{id}
+    </foreach>
+    </where>
+    </select>
+    <!--<select id="tableuser"  resultType="User">-->
+    <!--<include refid="sql"/>-->
     <!--</select>-->
 
-    <!--<select id="selectpage" parameterType="hashmap" resultType="User">-->
-        <!--<include refid="sql"/>-->
-        <!--<where>-->
-            <!--<if test="name != null and name != ''">-->
-                <!--and name like '%${name}%'-->
-            <!--</if>-->
-            <!--<if test="loginName != null and loginName != ''">-->
-                <!--and loginName like '%${loginName}%'-->
-            <!--</if>-->
-        <!--</where>-->
-        <!--limit #{pagestart},#{limit}-->
-    <!--</select>-->
+    <select id="usercount" resultType="java.lang.Integer">
+        select count(*) from user
+    </select>
 
-      <!--<select id="deleteAll" parameterType="user" resultType="User">-->
-          <!--select * from 'user'-->
-          <!--<where>-->
-              <!--id in-->
-              <!--<foreach collection="user_ids" item="user_id" separator="，" open="(" close=")">-->
-                  <!--#{user_id}-->
-              <!--</foreach>-->
-          <!--</where>-->
+    <select id="selectpage" parameterType="hashmap" resultMap="resultMap">
+      select u.id as id,u.userName,u.userEmail,u.userSex,u.userStatus,u.userEndTime,
+      p.id as pid,p.powername from user u left join power p on u.userGrade=p.id
+        <where>
+        <if test="userName != null and userName != ''">
+        and userName like #{userName}
+        </if>
+        <!--<if test="loginName != null and loginName != ''">-->
+        <!--and loginName like '%${loginName}%'-->
+        <!--</if>-->
+        </where>
+        limit #{pagestart},#{limit}
+    </select>
 
-       <!--</select>-->
 </mapper>

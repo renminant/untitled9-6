@@ -1,15 +1,20 @@
 package pojo;
 
-import java.util.List;
+import java.sql.Date;
+import java.sql.Time;
 
 public class User {
     Integer id;
-    String nickname;
     String userName;
     String password;
-    String power;
-    String stauts;
+    String userEmail;
+    String userSex;
+    String userGrade;
+    String userStatus;
+    String userDesc;
+    String userEndTime;
     String headpath;
+    Power power;
 
 
     public Integer getId() {
@@ -18,14 +23,6 @@ public class User {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
     }
 
     public String getUserName() {
@@ -44,20 +41,52 @@ public class User {
         this.password = password;
     }
 
-    public String getPower() {
-        return power;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setPower(String power) {
-        this.power = power;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
-    public String getStauts() {
-        return stauts;
+    public String getUserSex() {
+        return userSex;
     }
 
-    public void setStauts(String stauts) {
-        this.stauts = stauts;
+    public void setUserSex(String userSex) {
+        this.userSex = userSex;
+    }
+
+    public String getUserGrade() {
+        return userGrade;
+    }
+
+    public void setUserGrade(String userGrade) {
+        this.userGrade = userGrade;
+    }
+
+    public String getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public String getUserDesc() {
+        return userDesc;
+    }
+
+    public void setUserDesc(String userDesc) {
+        this.userDesc = userDesc;
+    }
+
+    public String getUserEndTime() {
+        return userEndTime;
+    }
+
+    public void setUserEndTime(String userEndTime) {
+        this.userEndTime = userEndTime;
     }
 
     public String getHeadpath() {
@@ -68,16 +97,29 @@ public class User {
         this.headpath = headpath;
     }
 
+
+    public Power getPower() {
+        return power;
+    }
+
+    public void setPower(Power power) {
+        this.power = power;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", nickname='" + nickname + '\'' +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
-                ", power='" + power + '\'' +
-                ", stauts='" + stauts + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                ", userSex='" + userSex + '\'' +
+                ", userGrade='" + userGrade + '\'' +
+                ", userStatus='" + userStatus + '\'' +
+                ", userDesc='" + userDesc + '\'' +
+                ", userEndTime=" + userEndTime +
                 ", headpath='" + headpath + '\'' +
+                ", power=" + power +
                 '}';
     }
 }

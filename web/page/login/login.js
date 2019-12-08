@@ -41,6 +41,7 @@ layui.use(['form','layer','jquery'],function(){
                         if (d != null ) {
                             // layer.close(loginLoadIndex);
                             window.sessionStorage.setItem("user",d.userName);
+                            window.sessionStorage.setItem("userGrade",d.userGrade);
                             window.location.href = "/ren/index.html";
                         } else {
                             layer.msg("用户名密码错误")

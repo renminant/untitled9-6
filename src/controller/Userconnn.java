@@ -1,20 +1,16 @@
 package controller;
 
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import pojo.User;
 import service.UserDao;
 import tool.Tool;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 @Controller
@@ -40,11 +36,59 @@ public class Userconnn {
         }
     }
 
+    //列表
+    @RequestMapping("/tableuser.action")
+    @ResponseBody
+    public Map<String, Object> selectlayuitable(int page, int limit,String userName) {
+        HashMap<String, Object> map = new HashMap<>();
+        int pagestart = (page - 1) * limit;
+        map.put("pagestart", pagestart);
+        map.put("limit", limit);
+        map.put("userName", userName);
+//        map.put("loginName", loginName);
+        List<User> users = userDao.selectpage(map);
+        Integer pagecount = userDao.usercount();
+        Map<String, Object> returnTable = Tool.testLayui(users, page, limit);
+        returnTable.put("count", pagecount);
+        return returnTable;
+    }
+//添加用户
+    @RequestMapping("/addUser.action")
+    @ResponseBody
+    public int addUser(@RequestBody User user) {
+        int addUser = userDao.addUser(user);
+        return addUser;
+    }
+
+//    单个删除
+        @RequestMapping("/deleteUserByid.action")
+    @ResponseBody
+    public int deleteUserByid(Integer id) throws Exception {
+        int  result =   userDao.deleteUserByid(id);
+        return  result;
+    }
+
+//批量删除
+        @RequestMapping("/deleteAll.action")
+    @ResponseBody
+    public int deleteAll(String user_ids)  {
+        boolean b = user_ids.endsWith(",");
+        if (b){
+            user_ids = user_ids.substring(0,user_ids.length() - 1);
+        }
+        String[] ids = user_ids.split(",");
+        int re = 0;
+        for (String id: ids) {
+            re = userDao.deleteUserByid(Integer.parseInt(id));
+        }
+        return re;
+    }
 //    //没有分页的列表
-//    @RequestMapping("/tableLayui.action")
+//    @RequestMapping("/tableuser.action")
 //    @ResponseBody
-//    public Map<String, Object> tableLayui() {
-//        List<User> users = userDao.tablelayui();
+//    public  Map<String, Object> tableuser() {
+//        List<User> users = userDao.tableuser();
+////        return users;
 //        return Tool.testLayui(users, 0, 0);
 //    }
 //    //点击列表一跳转至列表页面
@@ -59,22 +103,6 @@ public class Userconnn {
 //    }
 //
 //
-//    //分页
-//    @RequestMapping("/selectlayuitable.action")
-//    @ResponseBody
-//    public Map<String, Object> selectlayuitable(int page, int limit, String name, String loginName) {
-//        HashMap<String, Object> map = new HashMap<>();
-//        int pagestart = (page - 1) * limit;
-//        map.put("pagestart", pagestart);
-//        map.put("limit", limit);
-//        map.put("name", name);
-//        map.put("loginName", loginName);
-//        List<User> users = userDao.selectpage(map);
-//        Integer pagecount = userDao.usercount();
-//        Map<String, Object> returnTable = Tool.testLayui(users, page, limit);
-//        returnTable.put("count", pagecount);
-//        return returnTable;
-//    }
 //
 //    @RequestMapping("/updatehead.action")
 //    @ResponseBody
@@ -125,48 +153,16 @@ public class Userconnn {
 //    }
 //
 //
-//    @RequestMapping("/deleteUserByid.action")
-//    @ResponseBody
-//    public int deleteUserByid(Integer user_id) throws Exception {
-//        int  result =   userDao.deleteUserByid(user_id);
-//        return  result;
-//    }
+
 //
-//    @RequestMapping("/deleteAll.action")
-//    @ResponseBody
-//    public int deleteAll(String user_ids)  {
-//        boolean b = user_ids.endsWith(",");
-//        if (b){
-//            user_ids = user_ids.substring(0,user_ids.length() - 1);
-//        }
-//        String[] ids = user_ids.split(",");
-//        int re = 0;
-//        for (String user_id: ids) {
-//            re = userDao.deleteUserByid(Integer.parseInt(user_id));
-//        }
-//        return re;
-//    }
+
 //
 ////
-//@RequestMapping("/addUserPage1.action")
-//public String addUserPage1() {
+//@RequestMapping("/addUser1.action")
+//public String addUser1() {
 //    return "addtable";
 //}
 //
 //
-//@RequestMapping("/addUserPage.action")
-//@ResponseBody
-//public Map<String,String> addUserPage(@RequestBody User user) {
-//    HttpSession session = request.getSession();
-//    User addUser = userDao.addUserPage(user);
-//    Map<String,String> msg = new HashMap<>();
-//    if (addUser != null) {
-//        session.setAttribute("user", addUser);
-//        msg.put("msg","success");
-//        return msg;
-//    } else {
-//        msg.put("msg","false");
-//        return msg;
-//    }
-//}
+
 }

@@ -19,6 +19,33 @@ public class UserDaoImpl implements UserDao {
         return userMapper.Login(user);
     }
 
+//    @Override
+//    public List<User> tableuser() {
+//        return userMapper.tableuser();
+//    }
+
+
+
+    @Override
+    public List<User> selectpage(HashMap map) {
+        return userMapper.selectpage(map);
+    }
+
+    @Override
+    public Integer usercount() {
+        return userMapper.usercount();
+    }
+
+    @Override
+    public int deleteUserByid(Integer id) {
+        return userMapper.deleteUserByid(id);
+    }
+
+    @Override
+    public int addUser(User user) {
+        return userMapper.addUser(user);
+    }
+
 
 //    @Override
 //    public List<User> getUserList(User user) {
