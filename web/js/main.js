@@ -80,6 +80,7 @@ layui.use(['form','element','layer','jquery'],function(){
     }
 
     //最新文章列表
+// ../json/newsList.json
     $.get("../json/newsList.json",function(data){
         var hotNewsHtml = '';
         for(var i=0;i<5;i++){
@@ -93,13 +94,19 @@ layui.use(['form','element','layer','jquery'],function(){
     })
 
     //用户数量
-   $.get("../json/userList.json",function(data){
-        $(".userAll span").text(data.count);
+   // $.get("/ren/usercount.action",function(data){
+   //      $(".userAll span").text(data.count);
+   //  })
+    $.ajax({
+        url:"/ren/usercount.action",
+        success:function (d) {
+            $(".userAll span").text(d);
+        }
     })
 
     //外部图标
-    // $.get(iconUrl,function(data){
-    //     $(".outIcons span").text(data.split(".icon-").length-1);
-    // })
+    $.get(iconUrl,function(data){
+        $(".outIcons span").text(data.split(".icon-").length-1);
+    })
 
 })

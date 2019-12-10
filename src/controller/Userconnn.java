@@ -52,6 +52,13 @@ public class Userconnn {
         returnTable.put("count", pagecount);
         return returnTable;
     }
+
+    @RequestMapping("/usercount.action")
+    @ResponseBody
+    public int usercount(){
+        return userDao.rusercount();
+    }
+
 //添加用户
     @RequestMapping("/addUser.action")
     @ResponseBody
@@ -82,6 +89,15 @@ public class Userconnn {
             re = userDao.deleteUserByid(Integer.parseInt(id));
         }
         return re;
+    }
+
+    //修改用户
+    @RequestMapping("/updatetable.action")
+    @ResponseBody
+    //public int updatetable(@ReqFuestBody  User user){ 后台提交的方式是JSON.striingby(data.feild)
+   // public int updatetable(  User user){ //后台提交方式是json方式 data,feild
+    public int updatetable(@RequestBody  User user){
+        return userDao.updatetable(user);
     }
 //    //没有分页的列表
 //    @RequestMapping("/tableuser.action")
@@ -146,23 +162,6 @@ public class Userconnn {
 //        }
 //        return map;
 //    }
-//    @RequestMapping("/updatetable.action")
-//    @ResponseBody
-//   public int updatetable(User user){
-//        return userDao.updatetable(user);
-//    }
-//
-//
 
-//
-
-//
-////
-//@RequestMapping("/addUser1.action")
-//public String addUser1() {
-//    return "addtable";
-//}
-//
-//
 
 }

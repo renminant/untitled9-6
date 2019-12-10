@@ -12,7 +12,7 @@ layui.use(['form','layer','laydate','table','laytpl'],function(){
         url : '../../json/newsList.json',
         cellMinWidth : 95,
         page : true,
-        height : "full-125",
+        // height : "full-125",
         limit : 20,
         limits : [10,15,20,25],
         id : "newsListTable",

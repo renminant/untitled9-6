@@ -12,7 +12,7 @@ layui.use(['form','layer','laydate','table','upload'],function(){
         url : '../../json/linkList.json',
         page : true,
         cellMinWidth : 95,
-        height : "full-104",
+        // height : "full-104",
         limit : 20,
         limits : [10,15,20,25],
         id : "linkListTab",

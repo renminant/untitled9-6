@@ -34,10 +34,10 @@
     <!--<update id="updatehead" parameterType="User">-->
     <!--update user set headpath=#{headpath} where user_id=#{user_id}-->
     <!--</update>-->
-
-    <!--<update id="updatetable" parameterType="user">-->
-    <!--update user set name=#{name},loginName=# {loginName},birthDate=#{birthDate},phone=#{phone} where user_id=#{user_id}-->
-    <!--</update>-->
+<!--修改用户-->
+    <update id="updatetable" parameterType="user">
+     update user set userName=#{userName},userEmail=#{userEmail},userSex=#{userSex},userGrade=#{userGrade},userStatus=#{userStatus},userDesc=#{userDesc} where id=#{id}
+    </update>
 <!--单个删除-->
     <delete id="deleteUserByid" parameterType="java.lang.Integer">
     delete from user where id=#{id}
@@ -62,11 +62,11 @@
     </select>
 
     <select id="selectpage" parameterType="hashmap" resultMap="resultMap">
-      select u.id as id,u.userName,u.userEmail,u.userSex,u.userStatus,u.userEndTime,
+      select u.id as id,u.userName,u.userEmail,u.userSex,u.userStatus,u.userEndTime,u.userGrade,u.userDesc,
       p.id as pid,p.powername from user u left join power p on u.userGrade=p.id
         <where>
         <if test="userName != null and userName != ''">
-        and userName like #{userName}
+        and userName like '%${userName}%'
         </if>
         <!--<if test="loginName != null and loginName != ''">-->
         <!--and loginName like '%${loginName}%'-->

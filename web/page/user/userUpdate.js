@@ -3,26 +3,41 @@ layui.use(['form','layer',"jquery",'upload'],function(){
     upload = layui.upload,
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery;
-    form.render();
-    form.on("submit(addUser)",function(data){
+
+
+
+    form.on("submit(UpdateUser)",function(data) {
         //弹出loading
-        var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.5});
+        console.log(data);
+        var index = top.layer.msg('数据提交中，请稍候', {icon: 16, time: false, shade: 0.5});
         // 实际使用时的提交信息
-        // $.post("上传路径",{
-        //     userName : $(".userName").val(),  //登录名
-        //     userEmail : $(".userEmail").val(),  //邮箱
-        //     userSex : data.field.sex,  //性别
-        //     userGrade : data.field.userGrade,  //会员等级
-        //     userStatus : data.field.userStatus,    //用户状态
-        //     newsTime : submitTime,    //添加时间
-        //     userDesc : $(".userDesc").text(),    //用户简介
-        // },function(res){
+        // var key, userInfo2 = '';
+        // userInfo2 = {
+        //     'userName': $(".userName").val(),
+        //     'password': $(".password").val(),''''''''''''''''''''\
+        //     'userE mail': $(".userEmail").val(),
+        //     'userSex': data.field.userSex,
+        //     'userGrade': data.field.userGrade,
+        //     'userStatus': data.field.userStatus,
+        //     'userDesc': $(".userDesc").val(),
         //
+        // };
+
+        // $.post('updatetable.action', data.field, function (flag) {
+        //     if (flag == 1) {
+        //         layer.msg("修改成功", {icon: 6});
+        //         layer.closeAll();
+        //
+        //         table.reload('testReload', {});//修改后返回列表页面进行刷新
+        //     } else {
+        //         layer.msg("修改失败", {icon: 6});
+        //     }
         // })
         setTimeout(function(){
             $.ajax(
                 {
-                    url: "/ren/addUser.action",
+
+                    url: "/ren/updatetable.action",
                     data: JSON.stringify(data.field),
                     dataType: "json",
                     type: "post",
@@ -30,25 +45,33 @@ layui.use(['form','layer',"jquery",'upload'],function(){
                     success: function (d) {
                         // d.msg == "success"
                         if (d>0) {
-                            reid = d;
-                            // $("#uploadImg").trigger("click");
-                            // layer.msg("添加成功！")
-                            top.layer.close(index);
-                            top.layer.msg("用户添加成功！");
-                            top.layer.closeAll();
-                            // layer.close(layer.index)
+                            layer.close(index);
+                            layer.msg("修改成功！");
+                            layer.close(layer.index)
                             //刷新父页面
                             parent.location.reload();
-                           // location.href="/ren/tableuser.action"
                         } else {
-                            layer.msg("添加失败")
+                            layer.msg("修改失败")
                         }
                     }
                 }
             )
         },2000);
+
+        // for (key in data.field) {
+        //     if (key.indexOf("like") != -1) {
+        //         userInfo2[key] = "on";
+        //     }
+        // }
+        // window.sessionStorage.setItem("userInfo", JSON.stringify(userInfo2));
+        // setTimeout(function () {
+        //     layer.close(index);
+        //     layer.msg("提交成功！");
+        // }, 2000);
         return false;
     })
+
+
 
     //格式化时间
     function filterTime(val){
@@ -61,5 +84,4 @@ layui.use(['form','layer',"jquery",'upload'],function(){
     //定时发布
     var time = new Date();
     var submitTime = time.getFullYear()+'-'+filterTime(time.getMonth()+1)+'-'+filterTime(time.getDate())+' '+filterTime(time.getHours())+':'+filterTime(time.getMinutes())+':'+filterTime(time.getSeconds());
-
 })

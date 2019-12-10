@@ -20,4 +20,8 @@ public interface UserDao {
     public int deleteUserByid(Integer id);
 
     public int addUser(User user);
+
+    public int updatetable(User user);
+
+ public int rusercount();
 }

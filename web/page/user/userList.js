@@ -12,7 +12,7 @@ layui.use(['form','layer','table','laytpl','jquery','upload'],function(){
         url : '/ren/tableuser.action',
         cellMinWidth : 95,
         page : true,
-        height : "full-125",
+        // height : "full-125",
         limits : [10,15,20,25],
         limit : 20,
         id : "userListTable",
@@ -51,9 +51,9 @@ layui.use(['form','layer','table','laytpl','jquery','upload'],function(){
                 },
                 url:'/ren/tableuser.action',
                 where: {
-                    key: $(".searchVal").val()  //搜索的关键字
+                    // key: $(".searchVal").val()  //搜索的关键字
 
-                        // 'userName': $.trim(searchVal)
+                        'userName': $.trim(searchVal)
 
                 }
             }, 'data');
@@ -94,6 +94,40 @@ layui.use(['form','layer','table','laytpl','jquery','upload'],function(){
     $(".addNews_btn").click(function(){
         addUser();
     })
+
+//编辑用户
+    function UpdateUser(data){
+        var index = layui.layer.open({
+            title : "修改用户",
+            type : 2,
+            content : "userUpdate.html",
+            success : function(layero, index){
+                var body = layui.layer.getChildFrame('body', index);
+                if(data){
+                    body.find(".id").val(data.id);
+                    body.find(".userName").val(data.userName);  //登录名
+                    body.find(".userEmail").val(data.userEmail);  //邮箱
+                    body.find(".userSex input[value="+data.userSex+"]").prop("checked","checked");  //性别
+                    body.find(".userGrade").val(data.userGrade);  //会员等级
+                    body.find(".userStatus").val(data.userStatus);    //用户状态
+                    body.find(".userDesc").val(data.userDesc);//用户简介
+                    form.render();
+                }
+                setTimeout(function(){
+                    layui.layer.tips('点击此处返回用户列表', '.layui-layer-setwin .layui-layer-close', {
+                        tips: 3
+                    });
+                },500)
+            }
+        })
+        layui.layer.full(index);
+        window.sessionStorage.setItem("index",index);
+        //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+        $(window).on("resize",function(){
+            layui.layer.full(window.sessionStorage.getItem("index"));
+        })
+    }
+
 
     //批量删除
     $(".delAll_btn").click(function(){
@@ -136,11 +170,16 @@ layui.use(['form','layer','table','laytpl','jquery','upload'],function(){
 
     //列表操作
     table.on('tool(userList)', function(obj){
+        // var checkStatus = table.checkStatus(obj.config.id);
+            // ,data = checkStatus.data; //获取选中的数据
         var layEvent = obj.event,
             data = obj.data;
-
-        if(layEvent === 'edit'){ //编辑
-            addUser(data);
+       var id =$("#id").val();
+        // id = obj.id;
+        //编辑
+        if(layEvent === 'edit'){
+            UpdateUser(data);
+            return id;
         }else if(layEvent === 'usable'){ //启用禁用
             var _this = $(this),
                 usableText = "是否确定禁用此用户？",
